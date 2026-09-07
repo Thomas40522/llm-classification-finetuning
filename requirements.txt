@@ -10,3 +10,5 @@ seaborn
 jupyterlab
 ipykernel
 sentencepiece
+tiktoken
+protobuf
