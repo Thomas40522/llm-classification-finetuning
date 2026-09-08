@@ -28,10 +28,11 @@ MODEL_NAME = "microsoft/deberta-v3-small"
 
 MAX_LENGTH = 512
 BATCH_SIZE = 2
-NUM_EPOCHS = 3
+NUM_EPOCHS = 1
+START_EPOCH = 3
 LEARNING_RATE = 2e-5
 
-CHECKPOINT_DIR = "../models/reward_model"
+CHECKPOINT_DIR = "../models/reward_model_v2"
 os.makedirs(CHECKPOINT_DIR, exist_ok=True)
 
 
@@ -58,7 +59,7 @@ df["label"] = df[target_cols].values.argmax(axis=1)
 
 # train_df, val_df = train_test_split(
 #     df,
-#     test_size=0.01,
+#     test_size=0.1,
 #     random_state=42,
 #     stratify=df["label"]
 # )
@@ -146,6 +147,27 @@ train_loader = DataLoader(
 #     collate_fn=lambda batch: collate_fn(batch, tokenizer)
 # )
 
+# =====================================
+# Load checkpoint
+# =====================================
+
+checkpoint_path = f"{CHECKPOINT_DIR}/epoch_{START_EPOCH}.pt"
+
+checkpoint = torch.load(
+    checkpoint_path,
+    map_location=device
+)
+
+reward_model.load_state_dict(
+    checkpoint["model_state_dict"]
+)
+
+optimizer.load_state_dict(
+    checkpoint["optimizer_state_dict"]
+)
+
+print(f"Loaded checkpoint from: {checkpoint_path}")
+
 
 # =====================================
 # Training
@@ -154,7 +176,9 @@ train_loader = DataLoader(
 train_losses = []
 train_steps = []
 
-for epoch in range(NUM_EPOCHS):
+
+for i in range(NUM_EPOCHS):
+    epoch = START_EPOCH + i
 
     reward_model.train()
 
