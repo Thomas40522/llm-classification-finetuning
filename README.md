@@ -59,7 +59,7 @@ The model started to overfit after the second epoch, so I use the validation los
     │   │   ├── model.py
     │   │   └── train.py
     │   ├── reward_model_v2/
-    │   │   │   ├── data.py
+    │   │   ├── data.py
     │   │   ├── model.py
     │   │   └── train.py
     ├── models/
