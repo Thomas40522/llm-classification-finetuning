@@ -155,7 +155,7 @@ class PreferenceDataset(Dataset):
 
 class PreferenceDatasetTest(Dataset):
 
-    def __init__(self, enc_a, enc_b, labels):
+    def __init__(self, enc_a, enc_b):
         self.enc_a = enc_a
         self.enc_b = enc_b
 
@@ -296,7 +296,7 @@ def preprocess_dataframe_test(df):
 
     return df
 
-def tokenize_dataframe_train(train_df, tokenizer, max_length, batch_size):
+def load_dataframe_train(train_df, tokenizer, max_length, batch_size):
     train_dataset = PreferenceDataset(
         *tokenize_dataframe(
             train_df,
@@ -315,7 +315,7 @@ def tokenize_dataframe_train(train_df, tokenizer, max_length, batch_size):
     return train_loader
 
 
-def tokenize_dataframe_val(val_df, tokenizer, max_length, batch_size):
+def load_dataframe_val(val_df, tokenizer, max_length, batch_size):
     val_dataset = PreferenceDataset(
         *tokenize_dataframe(
             val_df,
@@ -333,13 +333,12 @@ def tokenize_dataframe_val(val_df, tokenizer, max_length, batch_size):
 
     return val_loader
 
-def tokenize_dataframe_test(test_df, tokenizer, max_length, batch_size):
+def load_dataframe_test(test_df, tokenizer, max_length, batch_size):
     test_dataset = PreferenceDatasetTest(
         *tokenize_dataframe_test(
             test_df,
             tokenizer,
-            max_length,
-            batch_size
+            max_length
         )
     )
 
